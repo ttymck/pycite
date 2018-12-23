@@ -6,20 +6,6 @@ from .config import Config
 
 logger = Config.getLogger("git")
 
-class Progress(git.remote.RemoteProgress):
-    def __init__(self):
-        self.bar = None
-        self.max_count = None
-        
-    def update(self, op_code, cur_count, max_count=None, message=''):
-        print("%s / %s" % (cur_count, max_count))
-        """
-        if self.max_count != max_count:
-            if ininstance(self.bar, tqdm):
-                self.bar.close()
-            self.bar = tqdm(total=max_count, file=sys.stdout)
-        self.bar.update(n=cur_count)
-        """
 class GitProject:
     """A project made available via git
     """
@@ -40,14 +26,19 @@ class GitProject:
         else:
             logger.debug("cloning repo at %s to %s",  self.url,  self.dest_path)
             try:
-                git.Repo.clone_from(self.url,  self.dest_path,  branch="master", progress=Progress())
+                git.Repo.clone_from(self.url,  self.dest_path,  branch="master")
             except git.exc.GitCommandError:
                 raise ValueError(f"Invalid repo url: {self.url}")
+                
 class GitLibrary():
     """A collection of GitProjects
     """
     def __init__(self,  library):
         self.projects = self._load_git_projects_from_library(library)
+        
+    def __iter__(self):
+        for project in self.projects:
+            yield project
         
     def _load_git_projects_from_library(self,  library) -> List[GitProject]:
         logger.debug("loading git projects from library: %s",  library)
@@ -59,10 +50,13 @@ class GitLibrary():
             except ValueError:
                 logger.debug("Ignoring project '%s' with invalid url: %s", name, url)
         return git_projects
-    
-    def py_file_count(self) -> int:
-        count = 0
-        for project in self.projects:
-            py_files = project.glob('**/*.py')
-            count += len(py_files)
-        return count
+        
+    @property
+    def pyglob(self):
+        return self._pyglob()
+        
+    def _pyglob(self) -> List:
+        py_files = []
+        for project in self:
+            py_files += project.dest_path.glob("**/*.py")
+        return py_files

@@ -32,7 +32,7 @@ class Library(ABC):
             yield project
             
     def __getitem__(self,  index):
-        return list(self)[index]
+        return self._projects[index]
     
     def __len__(self):
         return len(self._projects)
