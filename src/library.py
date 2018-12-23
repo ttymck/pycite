@@ -9,9 +9,9 @@ requests_cache.install_cache('web_cache',  backend='sqlite',  expire_after=60*20
 yaml = YAML()
 
 class PackageInfo:
-    def __init__(self,  name: str,  repo: str):
+    def __init__(self,  name: str,  repo_url: str):
         self.name = name
-        self.repo = repo
+        self.repo_url = repo_url
 
 class Library(ABC):
     """A library of python packages/modules for analysis
@@ -35,11 +35,15 @@ class Library(ABC):
         
     def items(self):
         for project in self._projects:
-            yield (project.name,  project.url)
+            yield (project.name,  project.repo_url)
     
     def keys(self):
         for project in self._projects:
             yield project.name
+    
+    def urls(self):
+        for project in self._projects:
+            yield project.repo_url
 
 @Library.register        
 class APA(Library):
