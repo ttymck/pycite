@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pycite"
+version = "0.0.1"
+description = "Python package network analysis"
+authors = ["Tyler M. Kontra"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+"ruamel.yaml" = "^0.15.81"
+requests = "^2.21"
+requests_cache = "^0.4.13"
+
+[tool.poetry.dev-dependencies]
+pytest = "^4.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
