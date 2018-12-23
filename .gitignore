@@ -1,0 +1,4 @@
+*.e4p
+*.eric6project
+*.pyc
+__pycache__
