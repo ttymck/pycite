@@ -10,6 +10,7 @@ python = "^3.6"
 "ruamel.yaml" = "^0.15.81"
 requests = "^2.21"
 requests_cache = "^0.4.13"
+GitPython = "^2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.0"
