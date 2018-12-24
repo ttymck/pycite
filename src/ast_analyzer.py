@@ -1,12 +1,15 @@
 import ast
 import itertools
-import copy
-from collections import namedtuple, Counter
+from dataclasses import dataclass
+from collections import Counter
 from src.config import Config
 
 logger = Config.getLogger("ast_analyzer")
 
-Import = namedtuple("Import", ["module"])
+@dataclass(frozen=True, eq=True)
+class Import:
+    module: str
+    
 
 def get_imports(name: str, glob: list):
     logger.info(f"Getting imports in {name}")
@@ -53,8 +56,11 @@ def _load_file(path):
         try:
             return ast.parse(fh.read(), path)
         except SyntaxError:
-            logger.error(f"File {path} using invalid syntax could not be parsed")
+            logger.error("File %s using invalid syntax could not be parsed", path)
             return None
+        except UnicodeDecodeError as e:
+            logger.error("File %s contains invalid Unicode: %s", path, e)
+            return None  
     
 def _parse_root(root):
     for node in ast.iter_child_nodes(root):

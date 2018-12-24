@@ -172,8 +172,8 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4"
 version = "1.24.1"
 
 [metadata]
-content-hash = "6b379b53b789f5ee3286e330d5d2ff10986427978791177d8aea2c0cb88a2ca7"
-python-versions = "^3.6"
+content-hash = "0241e08c02de261e207db1022b62f5e29438805b67cb43d120e9c538291fc6b4"
+python-versions = "^3.7"
 
 [metadata.hashes]
 atomicwrites = ["0312ad34fcad8fac3704d441f7b317e50af620823353ec657a53e981f92920c0", "ec9ae8adaae229e4f8446952d204a3e4b5fdd2d099f9be3aaf556120135fb3ee"]

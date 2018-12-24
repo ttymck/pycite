@@ -1,7 +1,8 @@
 """The package class defining a python module, application or library
 """
+from dataclasses import dataclass 
 
+@dataclass
 class PackageInfo:
-    def __init__(self,  name: str,  repo_url: str):
-        self.name = name
-        self.repo_url = repo_url
+    name: str
+    repo_url: str
