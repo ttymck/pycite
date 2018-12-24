@@ -19,14 +19,16 @@ def get_imports(name: str, glob: list):
         ignore_names = set(ignore_names)
         logger.info("Ignoring imports for names: %s", ignore_names)
         counter_names = list(import_counter.elements())
+        ignored = set()
         for i in counter_names:
             try:
                 if any([ignore in i.module for ignore in ignore_names]):
-                    logger.info("Ignoring import: %s", i)
+                    ignored.update(i)
                     del import_counter[i]
             except TypeError:
                 logger.error("Invalid ignore check for '%s'", i)
                 del import_counter[i]
+    logger.info("Ignoring: %s", ignored)
     logger.debug("%s import statements in project %s", len(list(import_counter.elements())), name)
     return import_counter   
         
