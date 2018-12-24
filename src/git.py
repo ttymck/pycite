@@ -40,7 +40,7 @@ class GitProject:
             logger.debug("Cloning repo at %s to %s",  self.url,  self.dest_path)
             try:
                 # try cloning from the given repo_url
-                git.Repo.clone_from(self.url,  self.dest_path,  branch="master")
+                self._clone_repo(self.url, self.dest_path)
                 cloned = True
             except git.exc.GitCommandError as e:
                 # if repo_url failed, find git:// URIs in the page
@@ -49,7 +49,7 @@ class GitProject:
                 while cloned == False:
                     for uri in git_uris:
                         try:
-                            git.Repo.clone_from(uri, self.dest_path, branch="master")
+                            self._clone_repo(uri, self.dest_path)
                             # if cloned succesfully, exit the while block
                             cloned = True
                         except git.exc.GitCommandError as e:
@@ -57,6 +57,10 @@ class GitProject:
             if cloned == False:
                 # if none of the URIs worked, raise runtime error
                 raise RuntimeError(f"Failed cloning repo from: {self.url}. Failed with error: {e}")
+                
+    @staticmethod
+    def _clone_repo(url, dest, branch='master', depth=1):
+        git.Repo.clone_from(url, dest)
                 
                     
     def _find_git_uri(self, repo_url):

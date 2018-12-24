@@ -1,6 +1,5 @@
 import ast
 import itertools
-import copy
 from collections import namedtuple, Counter
 from src.config import Config
 

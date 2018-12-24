@@ -6,7 +6,7 @@ authors = ["Tyler M. Kontra"]
 license = "GPL-3.0"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.7"
 "ruamel.yaml" = "^0.15.81"
 requests = "^2.21"
 requests_cache = "^0.4.13"
