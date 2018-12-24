@@ -1,6 +1,6 @@
 import sys
 from datetime import datetime, timedelta
-from collections import namedtuple
+from dataclasses import dataclass
 import json
 import re
 from pathlib import Path
@@ -12,8 +12,10 @@ from src.config import Config
 
 logger = Config.getLogger("git")
 
-
-GitProjectGlob = namedtuple("GitProjectGlob", ["name", "glob"])
+@dataclass
+class GitProjectGlob:
+    name: str
+    glob: typing.List[str]
 
 class GitProject:
     """A project made available via git
