@@ -16,7 +16,7 @@ GitProjectGlob = namedtuple("GitProjectGlob", ["name", "glob"])
 class GitProject:
     """A project made available via git
     """
-    cache_dir = Path.home() / ".cache" / Config.app_name
+    cache_dir = Config.cache_path / Config.app_name
     def __init__(self, name: str,  url: str, no_fetch=False):
         self.name = name
         self.url = url
@@ -41,7 +41,7 @@ class GitProject:
 class GitLibrary():
     """A collection of GitProjects
     """
-    git_pull_cache_file = Path.home() / ".cache" / Config.app_name / "git-cache.json"
+    git_pull_cache_file = Config.cache_path / "git-cache.json"
     cache_ttl = timedelta(hours=1)
     def __init__(self,  library):
         self.cached_projects = self._read_git_pull_cache()
@@ -66,9 +66,9 @@ class GitLibrary():
         return git_projects
         
     def _set_git_pull_cache(self, git_projects):
-        current_timestamp = datetime.now()
-        output = {"timestamp": current_timestamp.isoformat(timespec="seconds"), "project_names": [p.name for p in git_projects]}
-        print(output)
+        current_timestamp = datetime.now().isoformat(timespec="seconds")
+        output = {"timestamp": current_timestamp, "project_names": [p.name for p in git_projects]}
+        logger.debug("Setting git cache at: %s", current_timestamp)
         try:
             with open(self.git_pull_cache_file, "w") as f:
                 json.dump(output, f)
@@ -83,6 +83,7 @@ class GitLibrary():
                     cache = json.load(f)
                 cached_timestamp = datetime.strptime(cache.get("timestamp"), "%Y-%m-%dT%H:%M:%S")
                 if cached_timestamp + self.cache_ttl >= datetime.now():
+                    logger.debug("Using cached git projects from %s", cache.get("timestamp"))
                     return cache.get("project_names")
             except json.decoder.JSONDecodeError:
                 logger.error("Invalid git-cache json, ignoring cache!")
@@ -100,5 +101,5 @@ class GitLibrary():
         if not self.globbed:
             for project in self:
                 logger.debug("Globbing repo: %s", project.dest_path)
-                project.pyglob = project.dest_path.glob("**/*.py")
+                project.pyglob = list(project.dest_path.glob("**/*.py"))
             self.globbed = True
