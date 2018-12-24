@@ -8,7 +8,7 @@ from .config import Config
 
 def main():
     apa = APA()
-    apa._projects = apa._projects[:7]
+    apa._projects = apa._projects[:10]
     print(f"{len(apa)} modules to parse.")
     project_globs = GitLibrary(apa).pyglob
     py_file_count = sum(len(list(p.glob)) for p in project_globs) 

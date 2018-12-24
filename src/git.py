@@ -4,7 +4,7 @@ from collections import namedtuple
 import json
 import re
 from pathlib import Path
-from typing import List
+import typing
 import git
 import requests
 
@@ -24,6 +24,7 @@ class GitProject:
         self.name = name
         self.url = url
         self.dest_path = self.cache_dir / name
+        self.pyglob = None # set after fetch
         if not no_fetch:
             self._fetch()
 
@@ -86,7 +87,7 @@ class GitLibrary():
         for project in self.projects:
             yield project
         
-    def _load_git_projects_from_library(self,  library) -> List[GitProject]:
+    def _load_git_projects_from_library(self,  library) -> typing.List[GitProject]:
         logger.debug("Loading git projects from library: %s",  library)
         git_projects = []
         for (name,  url) in library.items():
@@ -102,7 +103,7 @@ class GitLibrary():
         self._set_git_pull_cache(git_projects)
         return git_projects
         
-    def _set_git_pull_cache(self, git_projects):
+    def _set_git_pull_cache(self, git_projects) -> None:
         current_timestamp = datetime.now().isoformat(timespec="seconds")
         output = {"timestamp": current_timestamp, "project_names": [p.name for p in git_projects]}
         logger.debug("Setting git cache at: %s", current_timestamp)
@@ -113,7 +114,7 @@ class GitLibrary():
             logger.error("Error writing git pull cache: %s", e)
             self.git_pull_cache_file.unlink()
             
-    def _read_git_pull_cache(self):
+    def _read_git_pull_cache(self) -> typing.List[str]:
         if self.git_pull_cache_file.exists():
             try:
                 with open(self.git_pull_cache_file, "r") as f:
@@ -128,15 +129,16 @@ class GitLibrary():
         return []
             
     @property
-    def pyglob(self):
+    def pyglob(self) -> typing.List[GitProject]:
         # generate globs
         self._pyglob()
         return [GitProjectGlob(project.name, project.pyglob) for project in self.projects]
         
         
-    def _pyglob(self) -> List:
+    def _pyglob(self) -> None:
         if not self.globbed:
             for project in self:
                 logger.debug("Globbing repo: %s", project.dest_path)
                 project.pyglob = list(project.dest_path.glob("**/*.py"))
             self.globbed = True
+            
