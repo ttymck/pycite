@@ -1,7 +1,7 @@
 from typing import List
 from abc import ABC, abstractmethod
 
-from .package_info import PackageInfo
+from .package import Package
 
 class Library(ABC):
     """A library of python packages/modules for analysis
@@ -10,7 +10,7 @@ class Library(ABC):
         self._projects = self._load_library()
         
     @abstractmethod
-    def _load_library(self) -> List[PackageInfo]:
+    def _load_library(self) -> List[Package]:
         pass
     
     def __iter__(self):
@@ -23,9 +23,12 @@ class Library(ABC):
     def __len__(self):
         return len(self._projects)
         
-    def items(self):
-        for project in self._projects:
-            yield (project.name,  project.repo_url)
+    def items(self, type_filter=None):
+        projects_list = self._projects
+        if type_filter:
+            projects_list = filter(lambda p: p.type == type_filter, projects_list)
+        for project in projects_list:
+            yield (project.name,  project.uri)
     
     def keys(self):
         for project in self._projects:

@@ -8,6 +8,7 @@ import typing
 import git
 import requests
 
+from src.catalog import PackageType
 from src.config import Config
 
 logger = Config.getLogger("git")
@@ -85,7 +86,7 @@ class GitLibrary():
     git_pull_cache_file = Config.cache_path / "git-cache.json"
     cache_ttl = timedelta(hours=1)
     def __init__(self,  library):
-        self.cached_projects = self._read_git_pull_cache()
+        self._cached_projects = self._read_git_pull_cache()
         self.projects = self._load_git_projects_from_library(library)
         self.globbed = False # flag to see if glob has already been run
         
@@ -96,8 +97,8 @@ class GitLibrary():
     def _load_git_projects_from_library(self,  library) -> typing.List[GitProject]:
         logger.debug("Loading git projects from library: %s",  library)
         git_projects = []
-        for (name,  url) in library.items():
-            cached = (name in self.cached_projects)
+        for (name,  url) in library.items(PackageType.GIT):
+            cached = name in self._cached_projects
             try:
                 project = GitProject(name,  url, cached)
                 git_projects.append(project)

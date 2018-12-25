@@ -1,7 +1,7 @@
 from collections import Counter
-from src.library.apa import APA
-from .git import GitLibrary
-from src.ast_analyzer import get_imports
+from src.catalog import APA
+from src.library import GitLibrary
+from src.analysis.ast_analyzer import get_imports
 from .config import Config
 
 #logger = Config.getLogger("app")
@@ -21,4 +21,5 @@ def main():
     print(f"{total} total import statements found.")
     print(f"5 Most Common Imports:\n{import_counter.most_common(5)}")
     
-main()
+if __name__ == "__main__":
+    main()

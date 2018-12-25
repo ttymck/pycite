@@ -1,6 +1,6 @@
 import pytest
 import ast
-from src import ast_analyzer
+from src.analysis import ast_analyzer
 
 
 @pytest.fixture()

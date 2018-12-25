@@ -4,7 +4,7 @@ import requests
 import requests_cache
 
 from src.config import Config
-from .package_info import PackageInfo
+from .package import Package, PackageType
 from .library import Library
 
 logger = Config.getLogger("library")
@@ -26,11 +26,11 @@ class APA(Library):
     def __repr__(self):
         return "<APA Library>"
     
-    def _load_library(self) -> List[PackageInfo]:
+    def _load_library(self) -> List[Package]:
         projects = self._read_projects_list(self.library_url)
         project_info = []
         for project in projects:
-            info = PackageInfo(project.get("name"),  project.get("repo_url"))
+            info = Package(PackageType.GIT, project.get("name"),  project.get("repo_url"))
             project_info.append(info)
         return project_info
         

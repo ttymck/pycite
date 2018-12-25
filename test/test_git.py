@@ -1,7 +1,7 @@
 import pytest
 import tempfile
 from pathlib import Path
-from src import git
+from src.library import git
 
 @pytest.fixture()
 def git_project():
