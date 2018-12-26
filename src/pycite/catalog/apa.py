@@ -1,16 +1,23 @@
-from typing import List
+import typing
+from dataclasses import dataclass
 from ruamel.yaml import YAML
 import requests
 import requests_cache
 
 from pycite.config import Config
 from .package import Package, PackageType
-from .catalog import Catalog
+from .catalog import Catalog, CatalogFilter
 
 logger = Config.getLogger("library")
 
 requests_cache.install_cache("web_cache", backend="sqlite", expire_after=60 * 20)
 yaml = YAML()
+
+
+@dataclass
+class ApaPackage(Package):
+    tags: list
+    desc: str
 
 
 @Catalog.register
@@ -24,16 +31,33 @@ class APA(Catalog):
 
     def __init__(self):
         super().__init__()
+        self._filter: CatalogFilter = None
 
     def __repr__(self):
         return "<APA Catalog: @mahmoud>"
 
-    def _load_package_list(self) -> List[Package]:
+    @property
+    def filter(self):
+        return self._filter
+
+    @filter.setter
+    def filter(
+        self, new_filter: typing.Union[CatalogFilter, typing.List[CatalogFilter]]
+    ):
+        if isinstance(new_filter, list):
+            new_filter: CatalogFilter = reduce((lambda x, y: x or y), new_filter)
+        self._filter = new_filter
+
+    def _load_package_list(self) -> typing.List[ApaPackage]:
         projects = self._read_projects_list(self.library_url)
         project_info = []
         for project in projects:
-            info = Package(
-                PackageType.GIT, project.get("name"), project.get("repo_url")
+            info = ApaPackage(
+                PackageType.GIT,
+                project.get("name"),
+                project.get("repo_url"),
+                project.get("tags"),
+                project.get("desc"),
             )
             project_info.append(info)
         return project_info

@@ -1,4 +1,5 @@
 import pytest
+from functools import reduce
 from pycite.catalog import APA, Catalog, Package
 
 @pytest.fixture(scope="module")
@@ -16,4 +17,8 @@ def test_keys(apa):
     
 def test_len(apa):
     assert isinstance(len(apa),  int)
+
+def test_apa_filter(apa):
+	apa.filter = lambda p: 'internet' not in (p.tags or [])
+	assert 'Reddit' not in apa.keys()
         
