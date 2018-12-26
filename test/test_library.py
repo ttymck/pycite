@@ -1,5 +1,5 @@
 import pytest
-from src.catalog import APA, Library, Package
+from pycite.catalog import APA, Library, Package
 
 @pytest.fixture(scope="module")
 def apa():

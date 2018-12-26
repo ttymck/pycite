@@ -1,7 +1,7 @@
 from collections import Counter
-from src.catalog import APA
-from src.library import GitLibrary
-from src.analysis.ast_analyzer import get_imports
+from pycite.catalog import APA
+from pycite.library import GitLibrary
+from pycite.analysis.ast_analyzer import get_imports
 from .config import Config
 
 #logger = Config.getLogger("app")

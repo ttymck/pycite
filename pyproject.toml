@@ -1,5 +1,8 @@
 [tool.poetry]
 name = "pycite"
+packages = [
+    { include = "pycite", from = "src" },
+]
 version = "0.0.1"
 description = "Python package network analysis"
 authors = ["Tyler M. Kontra"]

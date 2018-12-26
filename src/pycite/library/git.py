@@ -8,8 +8,8 @@ import typing
 import git
 import requests
 
-from src.catalog import PackageType
-from src.config import Config
+from pycite.catalog import PackageType
+from pycite.config import Config
 
 logger = Config.getLogger("git")
 

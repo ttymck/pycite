@@ -3,7 +3,7 @@ from ruamel.yaml import YAML
 import requests
 import requests_cache
 
-from src.config import Config
+from pycite.config import Config
 from .package import Package, PackageType
 from .library import Library
 

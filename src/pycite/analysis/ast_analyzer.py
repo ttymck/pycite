@@ -3,7 +3,7 @@ import itertools
 import typing
 from dataclasses import dataclass
 from collections import Counter
-from src.config import Config
+from pycite.config import Config
 
 logger = Config.getLogger("ast_analyzer")
 

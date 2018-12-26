@@ -5,3 +5,4 @@ __pycache__
 *.sqlite
 *.geany
 .python-version
+pycite.egg-info/

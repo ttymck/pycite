@@ -1,6 +1,6 @@
 import pytest
 
-from src.get_std_lib import get_std_lib
+from pycite.get_std_lib import get_std_lib
 
 def test_get_std_lib():
     std_lib_names = get_std_lib()
