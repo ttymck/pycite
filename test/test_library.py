@@ -1,12 +1,12 @@
 import pytest
-from pycite.catalog import APA, Library, Package
+from pycite.catalog import APA, Catalog, Package
 
 @pytest.fixture(scope="module")
 def apa():
     yield APA()
 
 def test_init(apa):
-    assert isinstance(apa, Library)
+    assert isinstance(apa, Catalog)
     
 def test_iter(apa):
     assert isinstance(apa[0],  Package)

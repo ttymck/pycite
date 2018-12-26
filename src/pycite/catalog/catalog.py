@@ -3,14 +3,14 @@ from abc import ABC, abstractmethod
 
 from .package import Package
 
-class Library(ABC):
+class Catalog(ABC):
     """A library of python packages/modules for analysis
     """
     def __init__(self):
-        self._projects = self._load_library()
+        self._projects = self._load_package_list()
         
     @abstractmethod
-    def _load_library(self) -> List[Package]:
+    def _load_package_list(self) -> List[Package]:
         pass
     
     def __iter__(self):

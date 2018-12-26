@@ -5,15 +5,15 @@ import requests_cache
 
 from pycite.config import Config
 from .package import Package, PackageType
-from .library import Library
+from .catalog import Catalog
 
 logger = Config.getLogger("library")
 
 requests_cache.install_cache('web_cache',  backend='sqlite',  expire_after=60*20)
 yaml = YAML()
 
-@Library.register        
-class APA(Library):
+@Catalog.register        
+class APA(Catalog):
     """Awesome Python Applications list, curated by 
     @mahmoud (Mahmoud Hashemi): https://github.com/mahmoud/awesome-python-applications
     """
@@ -24,9 +24,9 @@ class APA(Library):
         super().__init__()
     
     def __repr__(self):
-        return "<APA Library>"
+        return "<APA Catalog: @mahmoud>"
     
-    def _load_library(self) -> List[Package]:
+    def _load_package_list(self) -> List[Package]:
         projects = self._read_projects_list(self.library_url)
         project_info = []
         for project in projects:

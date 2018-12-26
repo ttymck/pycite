@@ -8,7 +8,7 @@ import typing
 import git
 import requests
 
-from pycite.catalog import PackageType
+from pycite.catalog import PackageType, Catalog
 from pycite.config import Config
 
 logger = Config.getLogger("git")
@@ -85,19 +85,19 @@ class GitLibrary():
     """
     git_pull_cache_file = Config.cache_path / "git-cache.json"
     cache_ttl = timedelta(hours=1)
-    def __init__(self,  library):
+    def __init__(self,  catalog: Catalog):
         self._cached_projects = self._read_git_pull_cache()
-        self.projects = self._load_git_projects_from_library(library)
+        self.projects = self._load_git_projects_from_library(catalog)
         self.globbed = False # flag to see if glob has already been run
         
     def __iter__(self):
         for project in self.projects:
             yield project
         
-    def _load_git_projects_from_library(self,  library) -> typing.List[GitProject]:
-        logger.debug("Loading git projects from library: %s",  library)
+    def _load_git_projects_from_catalog(self,  catalog: Catalog) -> typing.List[GitProject]:
+        logger.debug("Loading git projects from catalog: %s",  catalog)
         git_projects = []
-        for (name,  url) in library.items(PackageType.GIT):
+        for (name,  url) in catalog.items(PackageType.GIT):
             cached = name in self._cached_projects
             try:
                 project = GitProject(name,  url, cached)

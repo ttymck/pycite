@@ -1,3 +1,3 @@
 from .apa import APA
-from .library import Library
+from .catalog import Catalog
 from .package import Package, PackageType
