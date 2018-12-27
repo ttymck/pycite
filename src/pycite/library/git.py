@@ -53,19 +53,19 @@ class GitProject:
                 # if repo_url failed, find git:// URIs in the page
                 git_uris = self._find_git_uri(self.url)
                 # there may be multiple URIs, only need 1 to work
-                while cloned == False:
-                    for uri in git_uris:
-                        try:
-                            self._clone_repo(uri, self.dest_path)
-                            # if cloned succesfully, exit the while block
-                            cloned = True
-                        except git.exc.GitCommandError as e:
-                            continue
-            if cloned == False:
-                # if none of the URIs worked, raise runtime error
-                raise RuntimeError(
-                    f"Failed cloning repo from: {self.url}. Failed with error: {e}"
-                )
+                for uri in git_uris:
+                    try:
+                        self._clone_repo(uri, self.dest_path)
+                        # if cloned succesfully, exit the while block
+                        cloned = True
+                        break
+                    except git.exc.GitCommandError as e:
+                        continue
+                if cloned == False:
+                    # if none of the URIs worked, raise runtime error
+                    raise RuntimeError(
+                        f"Failed cloning repo from: {self.url}. Failed with error: {e}"
+                    )
 
     @staticmethod
     def _clone_repo(url, dest, branch="master", depth=1):
@@ -94,7 +94,7 @@ class GitLibrary:
 
     def __init__(self, catalog: Catalog):
         self._cached_projects = self._read_git_pull_cache()
-        self.projects = self._load_git_projects_from_library(catalog)
+        self.projects = self._load_git_projects_from_catalog(catalog)
         self.globbed = False  # flag to see if glob has already been run
 
     def __iter__(self):
@@ -106,7 +106,8 @@ class GitLibrary:
     ) -> typing.List[GitProject]:
         logger.debug("Loading git projects from catalog: %s", catalog)
         git_projects = []
-        for (name, url) in catalog.items(PackageType.GIT):
+        for pkg in catalog.items(PackageType.GIT):
+            name, url = pkg.name, pkg.uri
             cached = name in self._cached_projects
             try:
                 project = GitProject(name, url, cached)

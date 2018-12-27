@@ -9,9 +9,9 @@ from .config import Config
 
 def main():
     apa = APA()
-    apa._projects = apa._projects[:10]
-    print(f"{len(apa)} modules to parse.")
-    project_globs = GitLibrary(apa).pyglob
+    apa.filter = lambda p: 'science' in (p.tags or [])
+    print(f"{len(apa)} modules satisfy filter.")
+    project_globs = GitLibrary(apa).pyglob[:10]
     py_file_count = sum(len(list(p.glob)) for p in project_globs)
     print("Python File Count:", py_file_count)
     import_counter = Counter()
