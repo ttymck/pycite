@@ -1,6 +1,6 @@
 import pytest
 from functools import reduce
-from pycite.catalog import APA, Catalog, Package
+from topygraph.catalog import APA, Catalog, Package
 
 @pytest.fixture(scope="module")
 def apa():

@@ -8,8 +8,8 @@ import typing
 import git
 import requests
 
-from pycite.catalog import PackageType, Catalog
-from pycite.config import Config
+from topygraph.catalog import PackageType, Catalog
+from topygraph.config import Config
 
 logger = Config.getLogger("git")
 

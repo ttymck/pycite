@@ -4,7 +4,7 @@ from ruamel.yaml import YAML
 import requests
 import requests_cache
 
-from pycite.config import Config
+from topygraph.config import Config
 from .package import Package, PackageType
 from .catalog import Catalog, CatalogFilter
 
