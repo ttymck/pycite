@@ -3,7 +3,7 @@ import itertools
 import typing
 from dataclasses import dataclass
 from collections import Counter
-from pycite.config import Config
+from topygraph.config import Config
 
 logger = Config.getLogger("ast_analyzer")
 

@@ -1,7 +1,7 @@
 from collections import Counter
-from pycite.catalog import APA
-from pycite.library import GitLibrary
-from pycite.analysis.ast_analyzer import get_imports
+from topygraph.catalog import APA
+from topygraph.library import GitLibrary
+from topygraph.analysis.ast_analyzer import get_imports
 from .config import Config
 
 # logger = Config.getLogger("app")

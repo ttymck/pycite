@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 class Config:
-    app_name = "pycite"
+    app_name = "topygraph"
 
     cache_path = Path.home() / ".cache" / app_name
 

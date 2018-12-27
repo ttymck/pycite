@@ -1,6 +1,6 @@
 import pytest
 import ast
-from pycite.analysis import ast_analyzer
+from topygraph.analysis import ast_analyzer
 
 
 @pytest.fixture()

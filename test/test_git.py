@@ -1,7 +1,7 @@
 import pytest
 import tempfile
 from pathlib import Path
-from pycite.library import git
+from topygraph.library import git
 
 @pytest.fixture()
 def git_project():
